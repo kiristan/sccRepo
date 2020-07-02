@@ -3,7 +3,11 @@ package com.gemellaro.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.gemellaro.config.CustomerClient;
+import com.gemellaro.dto.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -11,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import com.gemellaro.security.Account;
@@ -20,10 +25,26 @@ import com.gemellaro.security.UserConfig;
 @Service(value = "myCustomUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserConfig uc;
+    /*@Autowired
+    private UserConfig uc;*/
 
-    @Override
+    @Autowired
+    private CustomerClient customerClient;
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username == null || username.length() < 3) {
+            throw new UsernameNotFoundException("Nome utente non valido!");
+        }
+        Account account = customerClient.getInfoAccount(username);
+        UserBuilder builder = User.withUsername(account.getUsername());
+        builder.disabled(false);
+        builder.password(account.getPassword());
+        builder.authorities("ROLE_" + account.getRole());
+        return builder.build();
+    }
+
+
+    /*@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.length() < 3) {
             throw new UsernameNotFoundException("Nome utente non valido!");
@@ -50,6 +71,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(uc.getUserId(), uc.getPassword()));
         Account a = restTemplate.getForObject(url, Account.class);
         return a;
-    }
+    }*/
 
 }
