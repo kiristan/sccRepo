@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: confif-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:/Users/sigan/git/gitRepo

@@ -1,0 +1,18 @@
+server:
+  port: 8055
+
+spring:
+  profiles:
+    active: profile1
+  application:
+    name: catalogwebservices
+  cloud:
+    config:
+      uri: http://localhost:8888
+      username: qwerty
+      password: pippo
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
