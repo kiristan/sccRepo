@@ -3,6 +3,7 @@ package com.gemellaro.controller;
 
 import java.util.List;
 
+import com.gemellaro.config.CustomerClient;
 import com.gemellaro.dto.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

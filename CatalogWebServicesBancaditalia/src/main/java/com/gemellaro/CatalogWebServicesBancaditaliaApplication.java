@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients("com.gemellaro.config")
 public class CatalogWebServicesBancaditaliaApplication {
 
     public static void main(String[] args) {
